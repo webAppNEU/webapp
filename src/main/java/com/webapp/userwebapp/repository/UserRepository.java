@@ -19,4 +19,7 @@ import javax.sql.DataSource;
     //User findByUsername(String username);
     public User findByUsername(String username);
 
+    public Integer getByUserId (Integer userId);
+
+
     }

@@ -1,6 +1,7 @@
 package com.webapp.userwebapp.controller;
 
 
+import com.webapp.userwebapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,13 +14,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,6 +43,7 @@ import java.util.logging.Logger;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig implements WebSecurityCustomizer  {
 
     //implements WebSecurityCustomizer
@@ -101,14 +103,15 @@ public UserDetailsManager users(DataSource dataSource)
 
         http.authorizeRequests().requestMatchers(HttpMethod.GET,"/healthz").permitAll();
         http.authorizeRequests().requestMatchers(HttpMethod.POST,"/v1/user").permitAll();
-        http.authorizeRequests().requestMatchers(HttpMethod.PUT,"/v1/user/{userId}").hasAuthority("User").and().httpBasic();
-                //.requestMatchers(HttpMethod.POST,"/v1/user").permitAll()
-                //.and().headers().disable().authorizeRequests().requestMatchers(HttpMethod.POST,"/v1/user").permitAll()
-                //.requestMatchers(HttpMethod.POST,"/v1/user").anonymous()
-               // .requestMatchers(HttpMethod.PUT,"/v1/user").hasAuthority("User").anyRequest().authenticated()
-            http.authorizeRequests().requestMatchers(HttpMethod.GET,"/v1/user/{userId}").hasAuthority("User").and().httpBasic();
-              //  .requestMatchers(HttpMethod.PUT,"/v1/user/{userId}").hasAuthority("User")
-               http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().requestMatchers(HttpMethod.PUT,"/v1/user/{userId}").authenticated().and().httpBasic();
+        //http.authorizeRequests().requestMatchers(HttpMethod.GET,"/v1/user/{userId}").authenticated().and().httpBasic();
+        http.authorizeRequests().requestMatchers(HttpMethod.GET,"/v1/user/{userId}").authenticated().and().httpBasic();
+        http.authorizeRequests().requestMatchers(HttpMethod.GET,"/v1/product/{productId}").permitAll();
+        http.authorizeRequests().requestMatchers(HttpMethod.POST,"/v1/product").authenticated();
+        http.authorizeRequests().requestMatchers(HttpMethod.PUT,"/v1/product/{productId}").authenticated().and().httpBasic();
+        http.authorizeRequests().requestMatchers(HttpMethod.DELETE,"/v1/product/{productId}").authenticated().and().httpBasic();
+        //  .requestMatchers(HttpMethod.PUT,"/v1/user/{userId}").hasAuthority("User")
+
 
           //      .and().formLogin()
  //             .usernameParameter("username").defaultSuccessUrl("/v1/user/{userId}").permitAll()
