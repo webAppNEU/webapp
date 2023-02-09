@@ -19,15 +19,18 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
+    @Column(name="userId")
     private Integer userId;
+    @Column
     @NotNull
     @Size(min=2, message = "First name should have at least 2 characters")
     private String firstname;
+    @Column
     @NotNull
     @Size(min=2, message = "Last name should have at least 2 characters")
     private String lastname;
 
+    @Column
     @NotNull
     //@Size(min=5, message = "Password should have at least 5 characters")
     private String password;
@@ -36,9 +39,11 @@ public class User {
     @NotNull
     @Column(name="username")
     private String username;
+    @Column
     private LocalDateTime account_created;
+    @Column
     private LocalDateTime account_updated;
-    private String role;
+
 
     public int getUserId() {
         return userId;
@@ -98,11 +103,5 @@ public class User {
         this.account_updated = account_updated;
     }
 
-    public String getRole() {
-        return role;
-    }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

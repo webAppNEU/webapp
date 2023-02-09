@@ -1,21 +1,17 @@
 package com.webapp.userwebapp.controller;
 
 import com.webapp.userwebapp.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.NoSuchElementException;
 
 
 public class CustomUserDetails implements UserDetails {
@@ -23,35 +19,38 @@ public class CustomUserDetails implements UserDetails {
 
 
 
-   private User user;
+   private User user1;
+    private Integer id;
 
 
     public CustomUserDetails(User user) {
-        this.user = user;
+        this.user1 = user;
+
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (user.getRole() == null)
+        if (user1.getUsername()== null)
         {
             return null;
         }
+
         else
         {
-            return Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
+            return Collections.singleton(new SimpleGrantedAuthority(user1.getUsername()));
         }
 
     }
 
     @Override
     public String getPassword() {
-       return user.getPassword();
+       return user1.getPassword();
 
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user1.getUsername();
     }
 
     @Override
@@ -73,4 +72,6 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }
