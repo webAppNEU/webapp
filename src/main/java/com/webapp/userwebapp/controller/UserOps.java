@@ -31,8 +31,8 @@ public class UserOps {
     @GetMapping("/healthz")
     public Object healthz()
     {
-        Object object = HttpStatus.OK;
-        return new ResponseEntity<>(object,HttpStatus.OK);
+      
+        return HttpStatus.OK;
     }
     @PostMapping("/v1/user")
     public Object createUser(@RequestBody User user)
