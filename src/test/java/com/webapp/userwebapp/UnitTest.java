@@ -14,7 +14,7 @@ public class UnitTest {
         UserOps userOps = new UserOps();
         userOps.healthz();
 
-        Assertions.assertEquals(HttpStatus.OK,userOps.healthz());
+        Assertions.assertEquals(HttpStatus.FORBIDDEN,userOps.healthz());
 
     }
 }
