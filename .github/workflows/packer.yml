@@ -43,15 +43,20 @@
           name: Package
           path: staging
 
-      - name: Validate Template
-        uses: hashicorp/packer-github-actions@master
-        
-      - name: Packer Init
-        run: packer init .  
-      
-      - name: Packer Validate
-        run: packer validate .    
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: "1.8.3" # or `latest`
+
+      - name: Run `packer init`
+        id: init
+        run: "packer init ./ami1.pkr.hcl"
+
+      - name: Run `packer validate`
+        id: validate
+        run: "packer validate ./image.pkr.hcl"
       
       - name: Packer Build - Branches
-        if: github.event.pull_request.merged == true
-        run: packer build .
+       # if: github.event.pull_request.merged == true
+        run: "packer build ./ami1.pkr.hcl"
