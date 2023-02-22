@@ -44,7 +44,7 @@
           path: staging
 
       - name: Setup `packer`
-        uses: hashicorp/setup-packer@main
+        uses: webAppNEU/setup-packer@main
         id: setup
         with:
           version: "1.8.3" # or `latest`
