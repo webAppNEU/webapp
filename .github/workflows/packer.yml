@@ -44,7 +44,7 @@
           path: staging
 
       - name: Setup `packer`
-        uses: webAppNEU/setup-packer@main
+        uses: webAppNEU/packer-build-action@main
         id: setup
         with:
           version: "1.8.3" # or `latest`
