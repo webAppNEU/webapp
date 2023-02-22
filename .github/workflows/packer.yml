@@ -44,7 +44,7 @@
           path: staging
 
       - name: Setup `packer`
-        uses: webAppNEU/packer-github-actions@master
+        uses: webapp/packer-github-actions@master
         id: setup
         with:
           version: "1.8.3" # or `latest`
