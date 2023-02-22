@@ -44,7 +44,7 @@
           path: staging
 
       - name: Setup `packer`
-        uses: hashicorp/packer-github-actions@master
+        uses: hashicorp/setup-packer@master
         id: setup
         with:
           version: "1.8.3" # or `latest`
