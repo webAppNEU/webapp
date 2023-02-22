@@ -1,0 +1,59 @@
+  name: Java CI with Maven and Packer
+
+  on:
+    push:
+      branches: [main]
+    pull_request:
+      branches: [main]
+
+
+  jobs:
+    build:
+
+      runs-on: ubuntu-latest
+      
+      
+      env:
+        DB_DATABASE: userwebapp
+        DB_USER: root
+        DB_PASSWORD: root
+        CI: true  
+        ssh_username: "ec2-user"
+
+      steps:
+      
+      
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+        
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - run: mvn --batch-mode --update-snapshots verify
+      - run: mkdir staging && cp target/*.jar staging
+      - uses: actions/upload-artifact@v3
+        with:
+        name: Package
+        path: staging
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Packer Init
+        run: packer init .  
+      
+      - name: Packer Validate
+        run: packer validate .    
+      
+      - name: Packer Build - Branches
+        if: github.event.pull_request.merged == true
+        run: packer build .
