@@ -20,9 +20,15 @@ variable "profile" {
   default = "dev"
 }
 variable "aws-secret-access-key"{
+    type      = string
+  default   = "${env("AWS_SECRET_ACCESS_KEY")}"
+  sensitive = true
 
 }
 variable "aws-access-key-id"{
+
+  type    = string
+  default = "${env("AWS_ACCESS_KEY_ID")}"
 
 }
 
