@@ -39,19 +39,6 @@
           distribution: 'temurin'
       - run: mvn --batch-mode --update-snapshots verify
       
-     
-      
-
-      - uses: actions/checkout@v3
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          path: /home/ec2-user/webapp
-    
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: path/to/artifact
 
       - name: Install Packer
         run: sudo apt-get update && sudo apt-get install -y packer
