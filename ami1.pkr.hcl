@@ -88,10 +88,11 @@ provisioner "shell" {
     destination = "/home/ec2-user/webapp"
   }
 
-  // provisioner "file" {
-  //   source      = "/home/runner/work/webapp/webapp/target/"
-  //   destination = "/home/ec2-user/webapp"
-  // }
+      provisioner "file" {
+    source      = "./webapp.service"
+    destination = "/home/ec2-user/webapp/"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
