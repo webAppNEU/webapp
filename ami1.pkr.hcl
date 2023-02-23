@@ -72,7 +72,7 @@ provisioner "shell" {
     ]
   }
  post-processor "manifest" {
-    output = "manifest.json"
+    output = "/home/ec2-user/webapp/manifest.json"
     strip_path = true
     custom_data = {
       my_custom_data = "example"
