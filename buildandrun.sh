@@ -32,7 +32,7 @@ M2_HOME='/home/ec2-user/maven/apache-maven-3.9.0'
 PATH="$M2_HOME/bin:$PATH"
 export PATH
 
-mkdir ~/webapp
+
 #sudo yum install git -y
 #git clone https://maheshpoojaryneu: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@github.com/webAppNEU/webapp.git ~/webapp
 
@@ -46,8 +46,8 @@ sudo passwd mahesh
 
 sudo chown mahesh:mahesh ~/webapp
 sudo chmod 500 ~/webapp
-mvn clean install -f /home/ec2-user/webapp/pom.xml
-sudo chown mahesh:mahesh /home/ec2-user/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar
-sudo chmod 500 /home/ec2-user/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar
-nohup & java -jar /home/ec2-user/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar
+#mvn clean install -f /home/ec2-user/webapp/pom.xml
+sudo chown mahesh:mahesh ~/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
+sudo chmod 500 ~/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
+nohup & java -jar ~/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
 
