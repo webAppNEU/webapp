@@ -40,7 +40,7 @@ sudo chmod -R 775 /home/ec2-user/webapp
 sudo chown -R ec2-user:ec2-user /home/ec2-user/webapp
 
 sudo cp /home/ec2-user/webapp/webapp.service /etc/systemd/system/webapp.service 
-mvn clean install -f /home/ec2-user/webapp/pom.xml
+#mvn clean install -f /home/ec2-user/webapp/pom.xml
 #nohup  java -jar /home/ec2-user/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar &
 
 sudo systemctl enable webapp
