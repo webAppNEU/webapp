@@ -21,14 +21,14 @@ variable "subnet_id" {
 // }
 variable "aws-secret-access-key"{
     type      = string
-  default   = "${env("aws-access-key-id")}"
+  default   = "${env("AWS_SECRET_ACCESS_KEY")}"
   sensitive = true
 
 }
 variable "aws-access-key-id"{
 
   type    = string
-  default = "${env("aws-secret-access-key")}"
+  default = "${env("AWS_ACCESS_KEY_ID")}"
 
 }
 
