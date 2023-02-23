@@ -32,7 +32,7 @@
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: sudo yum install -y jq
+      - run: sudo apt install -y jq
       
 
       - name: Install Packer
