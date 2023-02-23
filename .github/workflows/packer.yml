@@ -50,4 +50,6 @@
       - name: Packer Build - Branches
        # if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
+      - run: AMI_ID=$(jq -r '.builds[-1].artifact_id' /home/ec2-user/webapp/manifest.json | cut -d ":" -f2)""
+      - run: echo $AMI_ID
 

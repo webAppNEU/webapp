@@ -47,8 +47,7 @@ sudo systemctl enable webapp
 sudo systemctl start webapp
 sudo systemctl daemon-reload
 sudo systemctl status webapp
-AMI_ID=$(jq -r '.builds[-1].artifact_id' /home/ec2-user/webapp/manifest.json | cut -d ":" -f2)
-echo $AMI_ID
+
 
 #sudo useradd mahesh
 #sudo passwd mahesh
