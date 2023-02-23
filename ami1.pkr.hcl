@@ -64,8 +64,8 @@ build {
 
 
   provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/staging/UserWebApp-0.0.1-SNAPSHOT.jar"
-    destination = "/home/ec2-user/webapp"
+    source      = "/home/runner/work/webapp/webapp/."
+    destination = "/home/ec2-user/webapp/"
   }
 
   provisioner "shell" {
