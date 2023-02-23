@@ -43,7 +43,15 @@
         with:
           name: Package
           path: staging
+      
+    packer-validate:
+      name: Packer Validate
+      runs-on: ubuntu-latest
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      steps:
       - name: Install Packer
         
         run: sudo apt-get update && sudo apt-get install -y packer
@@ -53,9 +61,7 @@
         run: packer validate .
 
       - name: Packer Build - Branches
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
        # if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
 
