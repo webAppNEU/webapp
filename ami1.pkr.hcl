@@ -74,7 +74,7 @@ build {
       "CHECKPOINT_DISABLE=1"
     ]
     script       = "./buildandrun.sh"
-    pause_before = "300s"
+    pause_before = "30s"
   }
 
 }
