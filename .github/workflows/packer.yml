@@ -38,13 +38,8 @@
           java-version: '17'
           distribution: 'temurin'
       - run: mvn --batch-mode --update-snapshots verify
-      - run: mkdir staging && cp target/*.jar staging
-      - run: echo ${{ env.AWS_ACCESS_KEY_ID }}
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Package
-          path: staging
       
+
       - name: Install Packer
         run: sudo apt-get update && sudo apt-get install -y packer
       - name: Packer Init
