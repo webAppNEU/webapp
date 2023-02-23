@@ -18,8 +18,8 @@
       
         CI: true  
         ssh_username: "ec2-user"
-        AWS_ACCESS_KEY_ID: AKIA2TWL72WVNGN2BN5R
-        AWS_SECRET_ACCESS_KEY: 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
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       steps:
       
@@ -32,8 +32,8 @@
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: sudo apt install -y jq
-      
+ 
+      - run: mvn --batch-mode --update-snapshots verify
 
       - name: Install Packer
         run: sudo apt-get update && sudo apt-get install -y packer
@@ -47,3 +47,7 @@
         run: "packer build ./ami1.pkr.hcl"
       - run: AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2)""
       - run: echo $AMI_ID
+
+      - run: aws ec2 modify-image-attribute \
+            --image-id $AMI_ID \
+            --launch-permission "Add=[{UserId=180918132071}]"
