@@ -1,8 +1,8 @@
 [Unit]
-Description=Employee Spring Boot application service
+Description=Webapp Spring Boot application service
 
 [Service]
-User=ubuntu
+User=ec2-user
 ExecStart=java -jar /home/ec2-user/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar 
 ExitStatus=143
 
