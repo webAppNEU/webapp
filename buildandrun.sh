@@ -23,7 +23,7 @@ mysql -u root -e "CREATE DATABASE userwebapp;" -proot --connect-expired-password
 sudo systemctl stop mysqld
 sudo systemctl unset-environment MYSQLD_OPTS
 sudo systemctl start mysqld
-
+sudo yum install -y jq
 
 mkdir ~/maven/
 sudo wget https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P ~/maven
@@ -46,7 +46,10 @@ mvn clean install -f /home/ec2-user/webapp/pom.xml
 sudo systemctl enable webapp
 sudo systemctl start webapp
 sudo systemctl daemon-reload
-sudo systemctl status employee
+sudo systemctl status webapp
+AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
+echo $AMI_ID
+
 #sudo useradd mahesh
 #sudo passwd mahesh
 #sudo chown mahesh:mahesh /home/ec2-user/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar

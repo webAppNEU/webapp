@@ -71,6 +71,13 @@ provisioner "shell" {
       "mkdir /home/ec2-user/webapp",
     ]
   }
+  "post-processors": [
+{
+  "type": "manifest",
+  "output": "manifest.json",
+  "strip_path": true
+}
+]
   provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/"
     destination = "/home/ec2-user/webapp"
