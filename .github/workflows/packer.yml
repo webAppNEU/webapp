@@ -15,9 +15,7 @@
       
       
       env:
-        DB_DATABASE: userwebapp
-        DB_USER: root
-        DB_PASSWORD: root
+      
         CI: true  
         ssh_username: "ec2-user"
         AWS_ACCESS_KEY_ID: AKIA2TWL72WVNGN2BN5R
@@ -26,10 +24,7 @@
       steps:
       
       
-      - name: Set up MySQL
-        run: |
-          sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+   
         
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -37,7 +32,7 @@
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: mvn --batch-mode --update-snapshots verify
+      - run: sudo yum install -y jq
       
 
       - name: Install Packer
@@ -50,5 +45,5 @@
       - name: Packer Build - Branches
        # if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
-      - run: AMI_ID=$(jq -r '.builds[-1].artifact_id' /home/ec2-user/webapp/manifest.json | cut -d ":" -f2)""
+      - run: AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2)""
       - run: echo $AMI_ID
