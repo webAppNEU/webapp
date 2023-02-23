@@ -51,9 +51,4 @@
       - name: Packer Build - Branches
        # if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
-      - run: AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2)
-      - run: echo $AMI_ID
 
-      - run: aws ec2 modify-image-attribute \
-            --image-id $AMI_ID \
-            --launch-permission "Add=[{UserId=180918132071}]"
