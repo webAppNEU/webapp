@@ -19,17 +19,6 @@ variable "subnet_id" {
 //   type    = string
 //   default = "dev"
 // }
-variable "aws-secret-access-key" {
-  type    = string
-  default = env("AWS_SECRET_ACCESS_KEY")
-}
-variable "aws-access-key-id" {
-
-  type    = string
-  default = env("AWS_ACCESS_KEY_ID")
-
-}
-
 
 # https://www.packer.io/plugins/builders/amazon/ebs
 source "amazon-ebs" "my-ami" {
@@ -37,8 +26,7 @@ source "amazon-ebs" "my-ami" {
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
   #  profile         = "${var.profile}"
-  access_key = "${var.aws-access-key-id}"
-  secret_key = "${var.aws-secret-access-key}"
+  
   ami_regions = [
     "us-east-1",
   ]
