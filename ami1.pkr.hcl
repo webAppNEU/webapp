@@ -26,7 +26,7 @@ source "amazon-ebs" "my-ami" {
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
   #  profile         = "${var.profile}"
-  
+    ami_users = ["180918132071"]
 
   ami_regions = [
     "us-east-1",
@@ -101,18 +101,6 @@ provisioner "shell" {
     script       = "./buildandrun.sh"
     pause_before = "5s"
   }
-  provisioner "shell" {
-    environment_vars = [
-      "DEBIAN_FRONTEND=noninteractive",
-      "CHECKPOINT_DISABLE=1"
-    ]
-    inline = [
-      ""AMI="$(curl http://169.254.169.254/latest/meta-data/ami-id)""",
-      ""aws ec2 modify-image-attribute 
-    \ --image-id $AMI 
-    \ --launch-permission "Add=[{UserId=180918132071}]" --region us-east-1"",
-     
-    ]
-  }
+
 
 }
