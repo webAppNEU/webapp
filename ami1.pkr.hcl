@@ -13,7 +13,7 @@ variable "ssh_username" {
 
 variable "subnet_id" {
   type    = string
-  default = "subnet-0978f277d99ea40ae"
+  default = "subnet-018148a11e84fb2c0"
 }
 // variable "profile" {
 //   type    = string
@@ -26,7 +26,7 @@ source "amazon-ebs" "my-ami" {
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
   #  profile         = "${var.profile}"
-  profile = "ami"
+  
 
   ami_regions = [
     "us-east-1",
@@ -71,11 +71,14 @@ provisioner "shell" {
       "mkdir /home/ec2-user/webapp",
     ]
   }
+  // provisioner "file" {
+  //   source      = "/home/runner/work/webapp/webapp/"
+  //   destination = "/home/ec2-user/webapp"
+  // }
   provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/"
+    source      = "/home/runner/work/webapp/webapp/target/"
     destination = "/home/ec2-user/webapp"
   }
-
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
