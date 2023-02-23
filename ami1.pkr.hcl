@@ -19,8 +19,12 @@ variable "profile" {
   type    = string
   default = "dev"
 }
+variable "AWS_ACCESS_KEY"{
 
+}
+variable "AWS_SECRET_ACCESS"{
 
+}
 
 
 # https://www.packer.io/plugins/builders/amazon/ebs
@@ -29,6 +33,8 @@ source "amazon-ebs" "my-ami" {
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
   profile         = "${var.profile}"
+  access_key  = "{{user `AWS_ACCESS_KEY`}}"
+  secret_key  = "{{user `AWS_SECRET_ACCESS`}}"
   ami_regions = [
     "us-east-1",
   ]
