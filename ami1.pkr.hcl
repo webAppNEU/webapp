@@ -75,6 +75,7 @@ provisioner "shell" {
     source      = "/home/runner/work/webapp/webapp/"
     destination = "/home/ec2-user/webapp"
   }
+
   // provisioner "file" {
   //   source      = "/home/runner/work/webapp/webapp/target/"
   //   destination = "/home/ec2-user/webapp"

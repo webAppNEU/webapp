@@ -39,9 +39,14 @@ export PATH
 sudo chmod -R 775 /home/ec2-user/webapp
 sudo chown -R ec2-user:ec2-user /home/ec2-user/webapp
 
+sudo cp /home/ec2-user/webapp/webapp.service /etc/systemd/system/webapp.service 
 mvn clean install -f /home/ec2-user/webapp/pom.xml
-nohup  java -jar /home/ec2-user/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar &
+#nohup  java -jar /home/ec2-user/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar &
 
+sudo systemctl enable webapp
+sudo systemctl start webapp
+sudo systemctl daemon-reload
+sudo systemctl status employee
 #sudo useradd mahesh
 #sudo passwd mahesh
 #sudo chown mahesh:mahesh /home/ec2-user/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar
