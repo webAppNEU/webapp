@@ -38,6 +38,7 @@
           distribution: 'temurin'
       - run: mvn --batch-mode --update-snapshots verify
       - run: mkdir staging && cp target/*.jar staging
+      - run: echo ${{ env.AWS_ACCESS_KEY_ID }}
       - uses: actions/upload-artifact@v3
         with:
           name: Package
@@ -53,3 +54,4 @@
       - name: Packer Build - Branches
        # if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
+
