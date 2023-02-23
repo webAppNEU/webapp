@@ -19,16 +19,14 @@ variable "subnet_id" {
 //   type    = string
 //   default = "dev"
 // }
-variable "aws-secret-access-key"{
-    type      = string
-  default   = "${user("AWS_SECRET_ACCESS_KEY")}"
-  sensitive = true
-
+variable "aws-secret-access-key" {
+  type    = string
+  default = env("AWS_SECRET_ACCESS_KEY")
 }
-variable "aws-access-key-id"{
+variable "aws-access-key-id" {
 
   type    = string
-  default = "${user("AWS_ACCESS_KEY_ID")}"
+  default = env("AWS_ACCESS_KEY_ID")
 
 }
 
@@ -38,9 +36,9 @@ source "amazon-ebs" "my-ami" {
   region          = "us-east-1"
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
-#  profile         = "${var.profile}"
-  access_key  = "${var.aws-access-key-id}"
-  secret_key  = "${var.aws-secret-access-key}"
+  #  profile         = "${var.profile}"
+  access_key = "${var.aws-access-key-id}"
+  secret_key = "${var.aws-secret-access-key}"
   ami_regions = [
     "us-east-1",
   ]
