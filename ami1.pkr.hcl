@@ -108,8 +108,8 @@ provisioner "shell" {
       "CHECKPOINT_DISABLE=1"
     ]
     inline = [
-      ""AMI="$(curl http://169.254.169.254/latest/meta-data/ami-id)"",
-      "aws ec2 modify-image-attribute \ --image-id $AMI \ --launch-permission "Add=[{UserId=180918132071}]"""
+      'AMI="$(curl http://169.254.169.254/latest/meta-data/ami-id)"',
+      'aws ec2 modify-image-attribute \ --image-id $AMI \ --launch-permission "Add=[{UserId=180918132071}]"''
       ]
   }
 
