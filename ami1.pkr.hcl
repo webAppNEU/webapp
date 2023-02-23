@@ -71,14 +71,14 @@ provisioner "shell" {
       "mkdir /home/ec2-user/webapp",
     ]
   }
-  // provisioner "file" {
-  //   source      = "/home/runner/work/webapp/webapp/"
-  //   destination = "/home/ec2-user/webapp"
-  // }
   provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/target/"
+    source      = "/home/runner/work/webapp/webapp/"
     destination = "/home/ec2-user/webapp"
   }
+  // provisioner "file" {
+  //   source      = "/home/runner/work/webapp/webapp/target/"
+  //   destination = "/home/ec2-user/webapp"
+  // }
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
