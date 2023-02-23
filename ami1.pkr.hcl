@@ -71,13 +71,13 @@ provisioner "shell" {
       "mkdir /home/ec2-user/webapp",
     ]
   }
- post-processor "manifest" {
-    output = "/home/runner/work/webapp/manifest.json"
-    strip_path = true
-    custom_data = {
-      my_custom_data = "example"
-    }
-}
+//  post-processor "manifest" {
+//     output = "/home/runner/work/webapp/manifest.json"
+//     strip_path = true
+//     custom_data = {
+//       my_custom_data = "example"
+//     }
+// }
 
   // provisioner "file" {
   //   source      = "/home/runner/work/webapp/webapp/"
@@ -102,15 +102,6 @@ provisioner "shell" {
     pause_before = "30s"
   }
 
-  provisioner "shell" {
-    environment_vars = [
-      "DEBIAN_FRONTEND=noninteractive",
-      "CHECKPOINT_DISABLE=1"
-    ]
-    inline = [
-      'AMI="$(curl http://169.254.169.254/latest/meta-data/ami-id)"',
-      'aws ec2 modify-image-attribute \ --image-id $AMI \ --launch-permission "Add=[{UserId=180918132071}]"''
-      ]
-  }
+
 
 }

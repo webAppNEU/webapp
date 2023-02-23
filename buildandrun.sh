@@ -49,6 +49,9 @@ sudo systemctl daemon-reload
 sudo systemctl status webapp
 
 
+ AMI="$(curl http://169.254.169.254/latest/meta-data/ami-id)"
+ aws ec2 modify-image-attribute \ --image-id "$AMI" \ --launch-permission "Add=[{UserId=180918132071}]"
+
 #sudo useradd mahesh
 #sudo passwd mahesh
 #sudo chown mahesh:mahesh /home/ec2-user/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar
