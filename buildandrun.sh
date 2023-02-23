@@ -45,10 +45,10 @@ sudo passwd mahesh
 #sudo chmod 500 /home/ec2-user/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar
 
 #sudo chown mahesh:mahesh ~/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
-sudo chmod 775 /home/ec2-user/webapp
-sudo chown ec2-user:ec2-user /home/ec2-user/webapp
+sudo chmod -R 775 /home/ec2-user/webapp
+sudo chown -R ec2-user:ec2-user /home/ec2-user/webapp
 #mvn clean install -f /home/ec2-user/webapp/pom.xml
 #sudo chown mahesh:mahesh ~/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
-sudo chmod 775 /home/ec2-user/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
+#sudo chmod -R 775 /home/ec2-user/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
 nohup& java -jar /home/ec2-user/webapp/UserWebApp-0.0.1-SNAPSHOT.jar
 
