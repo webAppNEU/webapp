@@ -1,0 +1,14 @@
+[Unit]
+Description=Webapp Spring Boot application service
+
+[Service]
+User=ec2-user
+ExecStart=/usr/bin/java -jar /home/ec2-user/webapp/UserWebApp-0.0.1-SNAPSHOT.jar 
+ExitStatus=143
+
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
