@@ -15,10 +15,10 @@ variable "subnet_id" {
   type    = string
   default = "subnet-0978f277d99ea40ae"
 }
-variable "profile" {
-  type    = string
-  default = "dev"
-}
+// variable "profile" {
+//   type    = string
+//   default = "dev"
+// }
 variable "aws-secret-access-key"{
     type      = string
   default   = "${env("AWS_SECRET_ACCESS_KEY")}"
@@ -38,7 +38,7 @@ source "amazon-ebs" "my-ami" {
   region          = "us-east-1"
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
-  profile         = "${var.profile}"
+#  profile         = "${var.profile}"
   access_key  = "${var.aws-access-key-id}"
   secret_key  = "${var.aws-secret-access-key}"
   ami_regions = [
