@@ -26,7 +26,7 @@ source "amazon-ebs" "my-ami" {
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
   #  profile         = "${var.profile}"
-  profile = "default"
+  profile = "awscli"
 
   ami_regions = [
     "us-east-1",
