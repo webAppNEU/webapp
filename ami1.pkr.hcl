@@ -62,7 +62,15 @@ source "amazon-ebs" "my-ami" {
 build {
   sources = ["source.amazon-ebs.my-ami"]
 
-
+provisioner "shell" {
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive",
+      "CHECKPOINT_DISABLE=1"
+    ]
+    inline = [
+      "mkdir /home/ec2-user/webapp",
+    ]
+  }
   provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/"
     destination = "/home/ec2-user/webapp"
