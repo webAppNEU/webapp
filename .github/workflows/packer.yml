@@ -20,8 +20,8 @@
         DB_PASSWORD: root
         CI: true  
         ssh_username: "ec2-user"
-        AWS_ACCESS_KEY_ID: AKIA2TWL72WVNGN2BN5R
-        AWS_SECRET_ACCESS_KEY: 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
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       steps:
       
@@ -38,13 +38,21 @@
           java-version: '17'
           distribution: 'temurin'
       - run: mvn --batch-mode --update-snapshots verify
-      - run: mkdir staging && cp target/*.jar staging
-      - run: echo ${{ env.AWS_ACCESS_KEY_ID }}
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Package
-          path: staging
       
+     
+      
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+          path: /home/ec2-user/webapp
+    
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: path/to/artifact
+
       - name: Install Packer
         run: sudo apt-get update && sudo apt-get install -y packer
       - name: Packer Init
