@@ -21,6 +21,9 @@
         DB_PASSWORD: root
         CI: true  
         ssh_username: "ec2-user"
+        AWS_ACCESS_KEY_ID: "AKIA2TWL72WVMPYTCHGN"
+        AWS_SECRET_ACCESS_KEY: "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"
+        
       steps:
       
       
