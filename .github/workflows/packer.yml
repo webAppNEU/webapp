@@ -21,9 +21,9 @@
         DB_PASSWORD: root
         CI: true  
         ssh_username: "ec2-user"
-        AWS_ACCESS_KEY_ID: AKIA2TWL72WVGLPDBRGD
-        AWS_SECRET_ACCESS_KEY: 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
-
+        AWS_ACCESS_KEY_ID: "AKIA2TWL72WVMPYTCHGN"
+        AWS_SECRET_ACCESS_KEY: "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"
+        
       steps:
       
       
@@ -49,6 +49,6 @@
         run: "packer validate ./ami1.pkr.hcl"
 
       - name: Packer Build - Branches
-       # if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
 
