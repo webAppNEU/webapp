@@ -49,6 +49,6 @@
         run: "packer validate ./ami1.pkr.hcl"
 
       - name: Packer Build - Branches
-       # if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
 
