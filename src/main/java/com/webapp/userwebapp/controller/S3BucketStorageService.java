@@ -5,6 +5,7 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.webapp.userwebapp.model.Image;
 import com.webapp.userwebapp.model.Product;
@@ -37,8 +38,8 @@ public class S3BucketStorageService {
     @Autowired
     ImageRepository imageRepository;
 
-    @Autowired
-    private AmazonS3 amazonS3Client;
+
+     AmazonS3 amazonS3Client = AmazonS3ClientBuilder.defaultClient();
 
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
