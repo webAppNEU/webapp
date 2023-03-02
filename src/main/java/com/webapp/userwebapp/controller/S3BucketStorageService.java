@@ -39,8 +39,8 @@ public class S3BucketStorageService {
     @Autowired
     ImageRepository imageRepository;
 
-    @Autowired
-     AmazonS3 amazonS3Client;
+
+     AmazonS3 amazonS3Client = AmazonS3ClientBuilder.defaultClient();
 
     @Value("${aws.s3.bucket.name}")
     private String bucketName;

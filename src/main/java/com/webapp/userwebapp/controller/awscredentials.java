@@ -2,6 +2,7 @@ package com.webapp.userwebapp.controller;
 
 import com.amazonaws.auth.*;
 import com.amazonaws.regions.Regions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.amazonaws.services.s3.AmazonS3;
@@ -25,8 +26,11 @@ public class awscredentials {
 //    return s3Client;
 //}
 
+
+
     @Bean
-    public AmazonS3 s3Client() {
+
+    public AmazonS3 s3Client1() {
         AmazonS3 s3 = AmazonS3ClientBuilder.standard()
                 .withCredentials(new InstanceProfileCredentialsProvider(false))
                 .build();
