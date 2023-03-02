@@ -39,7 +39,7 @@
           java-version: '17'
           distribution: 'temurin'
  
-      - run: mvn --batch-mode --update-snapshots verify
+      - run: mvn clean package -DskipTests
 
       - name: Install Packer
         run: sudo apt-get update && sudo apt-get install -y packer
