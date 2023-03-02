@@ -18,7 +18,7 @@ public class awscredentials {
 @Bean
 public AmazonS3 s3client(){
 
-    InstanceProfileCredentialsProvider instanceProfileCredentialsProvider = new InstanceProfileCredentialsProvider();
+    InstanceProfileCredentialsProvider instanceProfileCredentialsProvider = new InstanceProfileCredentialsProvider(true);
     return  AmazonS3ClientBuilder.standard()
             .withCredentials(instanceProfileCredentialsProvider)
             .build();
