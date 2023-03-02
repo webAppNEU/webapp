@@ -30,9 +30,12 @@ public class awscredentials {
 
     @Bean
     public AmazonS3 s3Client() {
-        return AmazonS3ClientBuilder.standard()
-                .withRegion(Regions.US_EAST_1)
+        AmazonS3 amazonS3 = AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new DefaultAWSCredentialsProviderChain())
+                .withRegion(Regions.DEFAULT_REGION)
                 .build();
+        return amazonS3;
     }
 
 //    @Value("${aws.access.key.id}")
