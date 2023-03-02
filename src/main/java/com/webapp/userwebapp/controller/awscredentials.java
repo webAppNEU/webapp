@@ -27,9 +27,10 @@ public class awscredentials {
 
     @Bean
     public AmazonS3 s3Client() {
-        AmazonS3 amazonS3 = AmazonS3ClientBuilder
-                .defaultClient();
-        return amazonS3;
+        AmazonS3 s3 = AmazonS3ClientBuilder.standard()
+                .withCredentials(new InstanceProfileCredentialsProvider(false))
+                .build();
+        return s3;
     }
 
 //    @Value("${aws.access.key.id}")
