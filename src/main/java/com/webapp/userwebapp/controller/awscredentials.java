@@ -28,10 +28,7 @@ public class awscredentials {
     @Bean
     public AmazonS3 s3Client() {
         AmazonS3 amazonS3 = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new DefaultAWSCredentialsProviderChain())
-                .withRegion(Regions.DEFAULT_REGION)
-                .build();
+                .defaultClient();
         return amazonS3;
     }
 
