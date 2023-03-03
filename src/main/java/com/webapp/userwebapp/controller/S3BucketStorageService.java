@@ -3,9 +3,15 @@ package com.webapp.userwebapp.controller;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.amazonaws.services.healthlake.model.S3Configuration;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.webapp.userwebapp.model.Image;
@@ -17,6 +23,7 @@ import com.webapp.userwebapp.repository.UserRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -40,7 +47,8 @@ public class S3BucketStorageService {
     ImageRepository imageRepository;
 
 
-     AmazonS3 amazonS3Client = AmazonS3ClientBuilder.defaultClient();
+    AmazonS3 amazonS3Client = AmazonS3ClientBuilder.defaultClient();
+
 
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
@@ -54,6 +62,7 @@ public class S3BucketStorageService {
      */
     public Object uploadFile(String keyName, MultipartFile file, Integer productId) {
         try {
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
             User user = userRepository.findByUsername(username);
@@ -82,19 +91,21 @@ public class S3BucketStorageService {
 
             }
             return object;
-        } catch (AmazonServiceException serviceException) {
-            Object object = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
-        } catch (AmazonClientException clientException) {
-            Object object = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
-        } catch (IOException e) {
-            Object object = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+       }
+        //catch (AmazonServiceException serviceException) {
+//            Object object = HttpStatus.BAD_REQUEST;
+//            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
+//        } catch (AmazonClientException clientException) {
+//            Object object = HttpStatus.BAD_REQUEST;
+//            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
+         catch (IOException e) {
             Object object = HttpStatus.BAD_REQUEST;
             return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
         }
+        //catch (Exception e) {
+//            Object object = HttpStatus.BAD_REQUEST;
+//            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
+//        }
     }
 
     public Object deleteFile(Integer productId, Integer imageId) {
@@ -120,10 +131,10 @@ public class S3BucketStorageService {
                     imageRepository.deleteById(imageId);
                     object = new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 } else {
-                    object = new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                    object = new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
             } else {
-                object = new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                object = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return object;
         } catch (Exception e) {

@@ -22,13 +22,13 @@ public class S3BucketStorageController {
         return service.uploadFile(fileName,file,productId);
     }
 
-    @DeleteMapping("v1/product/{productId}/image/{imageid}")
+    @DeleteMapping("/v1/product/{productId}/image/{imageid}")
     public  Object deleteFile(@PathVariable int imageid, @PathVariable int productId)
     {
         return service.deleteFile(productId,imageid);
 
     }
-    @GetMapping("v1/product/{productId}/image/{imageid}")
+    @GetMapping("/v1/product/{productId}/image/{imageid}")
     public  Object detailsImage(@PathVariable int imageid, @PathVariable int productId)
     {
         return service.detailsFile(productId,imageid);
@@ -36,7 +36,7 @@ public class S3BucketStorageController {
     }
 
 
-    @GetMapping("v1/product/{productId}/image")
+    @GetMapping("/v1/product/{productId}/image")
     public Object allImages(@PathVariable int productId)
     {
         return service.allImagesDetail(productId);
