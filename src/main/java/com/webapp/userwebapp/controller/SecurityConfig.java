@@ -110,6 +110,12 @@ public UserDetailsManager users(DataSource dataSource)
         http.authorizeRequests().requestMatchers(HttpMethod.POST,"/v1/product").authenticated();
         http.authorizeRequests().requestMatchers(HttpMethod.PUT,"/v1/product/{productId}").authenticated().and().httpBasic();
         http.authorizeRequests().requestMatchers(HttpMethod.DELETE,"/v1/product/{productId}").authenticated().and().httpBasic();
+
+        http.authorizeRequests().requestMatchers(HttpMethod.GET,"v1/product/{productId}/image/{imageid}").authenticated().and().httpBasic();
+        http.authorizeRequests().requestMatchers(HttpMethod.DELETE,"v1/product/{productId}/image/{imageid}").authenticated().and().httpBasic();
+        http.authorizeRequests().requestMatchers(HttpMethod.GET,"v1/product/{productId}/image").authenticated().and().httpBasic();
+        http.authorizeRequests().requestMatchers(HttpMethod.POST,"/v1/product/{productId}/image").authenticated();
+
         //  .requestMatchers(HttpMethod.PUT,"/v1/user/{userId}").hasAuthority("User")
 
 
@@ -125,7 +131,7 @@ public UserDetailsManager users(DataSource dataSource)
 
     @Override
     public void customize(WebSecurity web) {
-        web.ignoring().requestMatchers("/v1/user");
+//        web.ignoring().requestMatchers("/v1/user");
     }
 
 
