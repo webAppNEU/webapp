@@ -1,37 +1,22 @@
-  name: Java CI with Maven and Packer
+name: Packer
 
-  on:
-    push:
-      branches: [main]
-    pull_request:
-      branches: [main]
+on:
 
-    workflow_dispatch:
+  push:
+    branches: [main]
 
-  jobs:
-    build:
+  workflow_dispatch:
 
-      runs-on: ubuntu-latest
-      
-      
-      env:
-      
-        DB_DATABASE: userwebapp
-        DB_USER: root
-        DB_PASSWORD: root
-        CI: true  
-        ssh_username: "ec2-user"
+jobs:
+  packer-build:
+    name: Packer Build
+    runs-on: ubuntu-latest
+    env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         
-      steps:
-      
-      
-      - name: Set up MySQL
-        run: |
-          sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-        
+    steps:
+          
       - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -43,12 +28,7 @@
 
       - name: Install Packer
         run: sudo apt-get update && sudo apt-get install -y packer
-      - name: Packer Init
-        run: "packer init ./ami1.pkr.hcl"
-      - name: Packer Build - Branches
-        run: "packer validate ./ami1.pkr.hcl"
 
       - name: Packer Build - Branches
         #if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
-
