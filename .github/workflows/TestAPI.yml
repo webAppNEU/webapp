@@ -15,7 +15,6 @@ jobs:
     env:
       DB_DATABASE: userwebapp
       DB_USER: root
-      DB_PASSWORD: root
 
     steps:
     
@@ -23,7 +22,7 @@ jobs:
     - name: Set up MySQL
       run: |
         sudo /etc/init.d/mysql start
-        mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+        mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -pSqladmin#132$
       
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -33,4 +32,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn test -DTest=UnitTest#healthz --spring.datasource.password=Sqladmin#132$
+      run: mvn test -DTest=UnitTest#healthz
