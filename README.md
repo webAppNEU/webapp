@@ -41,4 +41,4 @@ Use Terraform to create a new EC2 instance from the AMI created in step 6.
 Obtain the public IP address of the EC2 instance and test the APIs using POSTMAN.
 Once you have tested the APIs and made any necessary changes, create a pull request with a detailed description of the changes.
 Store the Image details in the RDS and meta data in S3 for future use.
-The endpoints available for operations include GET, POST, PUT, PATCH, and DELETE requests for users and products. The HTTP messages that can be received include "200 OK," "201 Created," "204 No Content," "400 Bad Request," "401 Unauthenticated," "403 Forbidden," and "500 Internal Server Error."
+The endpoints available for operations include GET, POST, PUT, PATCH, and DELETE requests for users and products. The HTTP messages that can be received include "200 OK," "201 Created," "204 No Content," "400 Bad Request," "401 Unauthenticated," "403 Forbidden," and "500 Internal Server Error.".
