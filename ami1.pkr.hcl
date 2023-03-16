@@ -85,7 +85,7 @@ provisioner "shell" {
   // }
     provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar"
-    destination = "/home/ec2-user/webapp"
+    destination = "/home/ec2-user/webapp/UserWebApp-0.0.1-SNAPSHOT.jar"
   }
 
       provisioner "file" {
