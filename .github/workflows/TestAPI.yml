@@ -16,6 +16,7 @@ jobs:
       DB_DATABASE: userwebapp
       DB_USER: root
       DB_PASSWORD: root
+      
 
     steps:
     
@@ -33,4 +34,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      #run: mvn test -DTest=UnitTest#healthz
+      run: mvn package clean -DskipTests 
