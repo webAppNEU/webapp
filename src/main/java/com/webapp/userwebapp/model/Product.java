@@ -15,19 +15,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     private Integer productId;
-    @NotNull
+    @NotEmpty
     @Column
     private String name;
     @Column
-    @NotNull
+    @NotEmpty
     private String description;
-    @NotNull
+    @NotEmpty
     @Column
     private String sku;
     @Column
     @NotNull
-    @Min(value = 1)
-    @Max(value = 100)
+    @Min(value = 0)
+    @Max(value = 1000000)
     private Integer quantity;
 
     @Column
@@ -42,7 +42,7 @@ public class Product {
     private Integer owner_user_id;
 
     @Column
-    @NotNull
+    @NotEmpty
     private String manufacturer;
 
     public String getManufacturer() {

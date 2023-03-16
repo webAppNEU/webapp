@@ -46,8 +46,8 @@ public class S3BucketStorageService {
     @Autowired
     ImageRepository imageRepository;
 
-
-    AmazonS3 amazonS3Client = AmazonS3ClientBuilder.defaultClient();
+    @Autowired
+    AmazonS3 amazonS3Client;
 
 
     @Value("${aws.s3.bucket.name}")
@@ -72,8 +72,8 @@ public class S3BucketStorageService {
                 Object object1 = HttpStatus.FORBIDDEN;
                 object = new ResponseEntity<>(object1, HttpStatus.FORBIDDEN);
             } else if (user.getUserId() != product.get().getOwner_user_id()) {
-                Object object1 = HttpStatus.UNAUTHORIZED;
-                object = new ResponseEntity(object1, HttpStatus.UNAUTHORIZED);
+                Object object1 = HttpStatus.FORBIDDEN;
+                object = new ResponseEntity(object1, HttpStatus.FORBIDDEN);
             } else {
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentLength(file.getSize());
@@ -92,13 +92,14 @@ public class S3BucketStorageService {
             }
             return object;
        }
-        //catch (AmazonServiceException serviceException) {
-//            Object object = HttpStatus.BAD_REQUEST;
-//            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
-//        } catch (AmazonClientException clientException) {
-//            Object object = HttpStatus.BAD_REQUEST;
-//            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
-         catch (IOException e) {
+        catch (AmazonServiceException serviceException) {
+            Object object = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
+        }
+      catch (AmazonClientException clientException) {
+          Object object = HttpStatus.BAD_REQUEST;
+          return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
+      }  catch (IOException e) {
             Object object = HttpStatus.BAD_REQUEST;
             return new ResponseEntity(object, HttpStatus.BAD_REQUEST);
         }
@@ -110,7 +111,7 @@ public class S3BucketStorageService {
 
     public Object deleteFile(Integer productId, Integer imageId) {
 
-        try {
+       try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
             User user = userRepository.findByUsername(username);
@@ -120,8 +121,8 @@ public class S3BucketStorageService {
                 Object object1 = HttpStatus.NOT_FOUND;
                 object = new ResponseEntity<>(object1, HttpStatus.NOT_FOUND);
             } else if (user.getUserId() != product.get().getOwner_user_id()) {
-                Object object1 = HttpStatus.UNAUTHORIZED;
-                object = new ResponseEntity(object1, HttpStatus.UNAUTHORIZED);
+                Object object1 = HttpStatus.FORBIDDEN;
+                object = new ResponseEntity(object1, HttpStatus.FORBIDDEN);
             } else if (imageRepository.existsByImageId(imageId) & imageRepository.existsByproductId(productId)) {
                 Optional<Image> image = imageRepository.findById(imageId);
 
@@ -138,7 +139,7 @@ public class S3BucketStorageService {
             }
             return object;
         } catch (Exception e) {
-            Object object = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            Object object = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return object;
         }
     }
@@ -157,8 +158,8 @@ public class S3BucketStorageService {
                 object = new ResponseEntity<>(object1, HttpStatus.FORBIDDEN);
 
             } else if (user.getUserId() != product.get().getOwner_user_id()) {
-                Object object1 = HttpStatus.UNAUTHORIZED;
-                object = new ResponseEntity(object1, HttpStatus.UNAUTHORIZED);
+                Object object1 = HttpStatus.FORBIDDEN;
+                object = new ResponseEntity(object1, HttpStatus.FORBIDDEN);
             } else if (imageRepository.existsByImageId(imageId) & imageRepository.existsByproductId(productId)) {
                 Optional<Image> image = imageRepository.findById(imageId);
                 if (image.get().getproductId() == productId && image.get().getImageId() == imageId) {
@@ -196,20 +197,20 @@ public class S3BucketStorageService {
             Optional<Product> product = productRepository.findById(productId);
             List<Object> object;
             if (product == null) {
-                Object object1 = HttpStatus.FORBIDDEN;
+                    Object object1 = HttpStatus.FORBIDDEN;
                 object = Collections.singletonList(new ResponseEntity<>(object1, HttpStatus.FORBIDDEN));
 
             } else if (user.getUserId() != product.get().getOwner_user_id()) {
-                Object object1 = HttpStatus.UNAUTHORIZED;
-                object = (List<Object>) new ResponseEntity(object1, HttpStatus.UNAUTHORIZED);
+                Object object1 = HttpStatus.FORBIDDEN;
+                object = (List<Object>) new ResponseEntity(object1, HttpStatus.FORBIDDEN);
             } else {
                 List<Object> objectList = imageRepository.findAllByProductId(productId);
                 object = objectList;
             }
             return object;
         } catch (Exception e) {
-//            Object object = new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            Object object = new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(object,HttpStatus.FORBIDDEN);
         }
 
     }
