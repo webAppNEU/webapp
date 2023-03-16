@@ -43,7 +43,7 @@ public class UserOps {
     @PostMapping("/v1/user")
     public Object createUser(@RequestBody User user)
     {
-        try {
+       try {
             //user.setUserId(user.getUserId());
             Object object;
             if (userRepository.existsByUsername(user.getUsername())) {
@@ -64,8 +64,16 @@ public class UserOps {
                 usernew.setAccount_updated(LocalDateTime.now());
                 userRepository.save(usernew);
                 object = HttpStatus.CREATED;
-                Object object1 = usernew;
-                return new ResponseEntity<>(usernew,HttpStatus.CREATED);
+                Map<String, String> userdetails = new HashMap<>();
+                userdetails.put("id", String.valueOf(usernew.getUserId()));
+                userdetails.put("username", usernew.getUsername());
+                userdetails.put("firstname",usernew.getFirstname());
+                userdetails.put("lastname",usernew.getLastname());
+                userdetails.put("account_created",String.valueOf(usernew.getAccount_updated()));
+                userdetails.put("account_updated",String.valueOf(usernew.getAccount_updated()));
+
+                Object object1 = userdetails;
+                return new ResponseEntity<>(object1,HttpStatus.CREATED);
             }
         }
         catch (Exception e)
@@ -78,7 +86,7 @@ public class UserOps {
 
     @GetMapping("/v1/user/{userId}")
     public Object getUserById(@PathVariable("userId") int userId) {
-        try {
+//       try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Optional<User> user = userRepository.findById(userId);
             String currentUsername = authentication.getName();
@@ -105,22 +113,26 @@ public class UserOps {
                 object= userdetails;
                 return  new ResponseEntity<>(object,HttpStatus.OK);
             }
+            else if (user.get().getUsername() != (currentUsername))
+            {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
             else
             {
-                return HttpStatus.UNAUTHORIZED;
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
 
 
 
         }
-        catch (NoSuchElementException e) {
-            return HttpStatus.FORBIDDEN;
-        }
+//        catch (NoSuchElementException e) {
+//            return HttpStatus.FORBIDDEN;
+//        }
         //Optional<User> userret = userRepository.findById(userId);
 
         // return userret;
-    }
+//    }
 
     @PutMapping("/v1/user/{userId}")
     public ResponseEntity<Object> updateUser(@PathVariable int userId, @RequestBody User user) {
@@ -148,13 +160,18 @@ public class UserOps {
                 return new ResponseEntity<>(object,HttpStatus.NO_CONTENT) ;
 
             }
+            else if(user1.get().getUsername() != (currentUsername))
+            {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN) ;
+            }
+            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST) ;
         }
         catch (Exception e) {
-            Object object = HttpStatus.FORBIDDEN;
-            return new ResponseEntity<>(object,HttpStatus.FORBIDDEN);
+            Object object = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(object,HttpStatus.BAD_REQUEST);
         }
-        Object object =HttpStatus.UNAUTHORIZED;
-        return new ResponseEntity<>(object,HttpStatus.UNAUTHORIZED);
+//        object =HttpStatus.UNAUTHORIZED;
+//        return new ResponseEntity<>(object,HttpStatus.UNAUTHORIZED);
     }
 
 

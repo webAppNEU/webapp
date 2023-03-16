@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class awscredentials {
 
-//@Bean
+    //@Bean
 //public AmazonS3 s3client(){
 //
 ////    InstanceProfileCredentialsProvider instanceProfileCredentialsProvider = new InstanceProfileCredentialsProvider(false);
@@ -44,7 +44,7 @@ public class awscredentials {
     @Bean
     public AmazonS3 s3client() {
 
-       return AmazonS3ClientBuilder.defaultClient();
+        return AmazonS3ClientBuilder.defaultClient();
 //
 //        try {
 //            // Creating the STS client is part of your trusted code. It has
@@ -88,7 +88,7 @@ public class awscredentials {
 //            // couldn't parse the response from Amazon S3.
 //            a.printStackTrace();
 //        }
-
+//
 //    @Value("${aws.access.key.id}")
 //    private String awsId;
 //
@@ -114,3 +114,4 @@ public class awscredentials {
 //        return s3Client;
     }
 }
+//}

@@ -25,7 +25,7 @@ source "amazon-ebs" "my-ami" {
   region          = "us-east-1"
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
-  #  profile         = "${var.profile}"
+  profile         = "dev"
     ami_users = ["180918132071"]
 
   ami_regions = [
@@ -84,7 +84,7 @@ provisioner "shell" {
   //   destination = "/home/ec2-user/webapp"
   // }
     provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/target/"
+    source      = "/home/runner/work/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar"
     destination = "/home/ec2-user/webapp"
   }
 
