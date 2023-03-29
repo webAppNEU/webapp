@@ -92,6 +92,10 @@ provisioner "shell" {
     source      = "./webapp.service"
     destination = "/home/ec2-user/webapp/"
   }
+        provisioner "file" {
+    source      = "./config.json"
+    destination = "/home/ec2-user/webapp/config.json"
+  }
 
   provisioner "shell" {
     environment_vars = [
