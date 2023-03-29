@@ -1,16 +1,18 @@
 package com.webapp.userwebapp.controller;
 
+import com.timgroup.statsd.StatsDClient;
+import com.webapp.userwebapp.UserWebAppApplication;
 import com.webapp.userwebapp.model.Product;
 import com.webapp.userwebapp.model.User;
 import com.webapp.userwebapp.repository.ProductRepository;
 import com.webapp.userwebapp.repository.UserRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -27,6 +29,11 @@ public class ProductOps
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private StatsDClient statsDClient;
+
+    private static final Logger logger =  LoggerFactory.getLogger(UserWebAppApplication.class);
+
     public Object createProduct(Product product) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -35,9 +42,11 @@ public class ProductOps
             Object object;
             if (user == null) {
                 Object object1=HttpStatus.BAD_REQUEST;
+                logger.info("Invalid username or username is null");
                 object = new ResponseEntity(object1,HttpStatus.BAD_REQUEST);
             } else if (productRepository.existsBySku(product.getSku())) {
                 Object object1=HttpStatus.BAD_REQUEST;
+                logger.info( product.getSku() + " already exists");
                 object = new ResponseEntity(object1,HttpStatus.BAD_REQUEST);
 
             } else {
@@ -54,7 +63,8 @@ public class ProductOps
                 productRepository.save(product1);
                 Object object1=HttpStatus.CREATED;
                 object = new ResponseEntity(product1,HttpStatus.CREATED);
-
+                statsDClient.incrementCounter("addProduct.service");
+                logger.info(product.getName() +" added successfully");
 
             }
             return object;
@@ -62,6 +72,7 @@ public class ProductOps
         catch (Exception e)
         {
             Object object = HttpStatus.BAD_REQUEST;
+            logger.error(e +"");
             return new ResponseEntity(object,HttpStatus.BAD_REQUEST);
         }
     }
@@ -73,6 +84,7 @@ public class ProductOps
             Optional<Product> product = productRepository.findById(productId);
             Object object;
             if (product == null) {
+                logger.info("Invalid product id");
                 object = new ResponseEntity<>(HttpStatus.FORBIDDEN);
             } else {
                 productdetails.put("productId", String.valueOf(product.get().getProductId()));
@@ -85,12 +97,15 @@ public class ProductOps
                 productdetails.put("date_last_updated", String.valueOf(product.get().getDate_last_updated()));
                 productdetails.put("owner_user_id", String.valueOf(product.get().getOwner_user_id()));
                 object = productdetails;
+                statsDClient.incrementCounter("getProduct.service");
+                logger.info("Product details for productId" + productId +" retrieved successfully");
 
 
             }
             return object;
         } catch (Exception e) {
             Object object = HttpStatus.BAD_REQUEST;
+            logger.error(e +"");
             return new ResponseEntity<>(object,HttpStatus.BAD_REQUEST);
         }
 }
@@ -105,13 +120,16 @@ public class ProductOps
                 Object object;
                if (product == null) {
                    object = HttpStatus.BAD_REQUEST;
+                   logger.info("Invalid product Id");
                    return new ResponseEntity<>(object,HttpStatus.BAD_REQUEST);
                }else if (user.getUserId() != product.get().getOwner_user_id()) {
                     Object object1 = HttpStatus.FORBIDDEN;
+                   logger.info("Cannot update product as it is owned by a different user");
                     object = new ResponseEntity(object1,HttpStatus.FORBIDDEN);
                 }
                else if (productRepository.existsBySkuAndSkuNotLike(productupdt.getSku(), product.get().getSku())) {
                    Object object1 = HttpStatus.BAD_REQUEST;
+                   logger.info("Invalid product Id");
                    object = new ResponseEntity(object1,HttpStatus.BAD_REQUEST);
                } else {
                     product.map(productupdate -> {
@@ -122,6 +140,7 @@ public class ProductOps
                         productupdate.setQuantity(productupdt.getQuantity());
                         productupdate.setDate_last_updated(LocalDateTime.now());
                         productRepository.save(productupdate);
+                        logger.info(productupdt.getName() + " updated successfully");
                         return null;
                     });
                     Object object1 = HttpStatus.NO_CONTENT;
@@ -132,6 +151,7 @@ public class ProductOps
             catch (Exception e)
             {
                 Object object = HttpStatus.BAD_REQUEST;
+                logger.error(e +"");
                 return new ResponseEntity(object,HttpStatus.BAD_REQUEST);
             }
     }
@@ -146,6 +166,7 @@ public class ProductOps
             Object object;
             if (product == null) {
                 Object object1 = HttpStatus.BAD_REQUEST;
+                logger.info("Invalid product Id");
                 object = new ResponseEntity<>(object1,HttpStatus.BAD_REQUEST);
             }
 //            else if (productRepository.existsBySku(productupdt.getSku()) || productRepository.existsByDescription(productupdt.getDescription()) || productRepository.existsByName(productupdt.getName()) || productRepository.existsByQuantity(productupdt.getQuantity()) || productRepository.existsByManufacturer(productupdt.getManufacturer()) ) {
@@ -154,10 +175,12 @@ public class ProductOps
 //            }
             else if (productRepository.existsBySkuAndSkuNotLike(productupdt.getSku(), product.get().getSku())) {
                 Object object1 = HttpStatus.BAD_REQUEST;
+                logger.info("Product SKU already exists");
                 object = new ResponseEntity(object1,HttpStatus.BAD_REQUEST);
             }
             else if (user.getUserId() != product.get().getOwner_user_id()) {
                 Object object1 = HttpStatus.FORBIDDEN;
+                logger.info("Cannot update product "+ productId +" as it is owned by a different user");
                 object = new ResponseEntity(object1,HttpStatus.FORBIDDEN);
             }
             else {
@@ -208,6 +231,7 @@ public class ProductOps
 //                    productupdate.setQuantity(productupdt.getQuantity());
 //                    productupdate.setDate_last_updated(LocalDateTime.now());
                     productRepository.save(productput);
+                    logger.info(productupdt.getName() + " has been updated");
                     return null;
                 });
                 Object object1 = HttpStatus.NO_CONTENT;
@@ -218,6 +242,7 @@ public class ProductOps
         catch (Exception e)
         {
             Object object = HttpStatus.BAD_REQUEST;
+            logger.info(e +"");
             return new ResponseEntity(object,HttpStatus.BAD_REQUEST);
         }
     }
@@ -231,15 +256,18 @@ public class ProductOps
             Object object;
             if (product == null) {
                 Object object1 = HttpStatus.NOT_FOUND;
+                logger.info("Invalid product Id");
                 object = new ResponseEntity(object1,HttpStatus.NOT_FOUND);
             } else if (user.getUserId() != product.get().getOwner_user_id()) {
                 Object object1 = HttpStatus.FORBIDDEN;
+                logger.info("Cannot delete" + productId + " as it is owned by a different user");
                 object = new ResponseEntity(object1,HttpStatus.FORBIDDEN);
             }
             
             else {
                 productRepository.deleteById(productId);
                 Object object1 = HttpStatus.NO_CONTENT;
+                logger.info("Product " + productId + "  deleted successfully");
                 object = new ResponseEntity(object1,HttpStatus.NO_CONTENT);
 
             }
@@ -248,11 +276,13 @@ public class ProductOps
         catch (NoSuchElementException e)
         {
             Object object = HttpStatus.NOT_FOUND;
+            logger.info(e +"");
            return new ResponseEntity(object,HttpStatus.NOT_FOUND);
         }
         catch (Exception a)
         {
             Object object = HttpStatus.BAD_REQUEST;
+            logger.info(a +"");
             return new ResponseEntity(object,HttpStatus.BAD_REQUEST);
         }
     }
