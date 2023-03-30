@@ -19,7 +19,7 @@ sudo chown -R ec2-user:ec2-user /home/ec2-user/webapp
 sudo cp /home/ec2-user/webapp/webapp.service /etc/systemd/system/webapp.service 
 sudo systemctl daemon-reload
 sudo systemctl enable webapp
-sudo systemctl start webapp
+# sudo systemctl start webapp
 # sudo systemctl daemon-reload
 # sudo systemctl status webapp
 
