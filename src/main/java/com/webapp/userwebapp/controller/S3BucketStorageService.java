@@ -14,12 +14,14 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.webapp.userwebapp.UserWebAppApplication;
 import com.webapp.userwebapp.model.Image;
 import com.webapp.userwebapp.model.Product;
 import com.webapp.userwebapp.model.User;
 import com.webapp.userwebapp.repository.ImageRepository;
 import com.webapp.userwebapp.repository.ProductRepository;
 import com.webapp.userwebapp.repository.UserRepository;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,11 +36,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.logging.Logger;
 
 @Service
 public class S3BucketStorageService {
 
+
+    private static final Logger logger =  LoggerFactory.getLogger(UserWebAppApplication.class);
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -88,6 +91,7 @@ public class S3BucketStorageService {
                 image.setproductId(productId);
                 imageRepository.save(image);
                 object = image;
+                logger.info(keyName + " File uploaded for Product ID" +productId );
 
             }
             return object;
@@ -130,6 +134,7 @@ public class S3BucketStorageService {
                     String keynamepath = image.get().getS3_bucket_path();
                     amazonS3Client.deleteObject(bucketName, keynamepath);
                     imageRepository.deleteById(imageId);
+                    logger.info("ImageId " + imageId + " deleted successfully" +productId );
                     object = new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 } else {
                     object = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -170,6 +175,7 @@ public class S3BucketStorageService {
                     imagedetails.put("date_created", String.valueOf(image.get().getDate_created()));
                     imagedetails.put("s3_bucket_path", String.valueOf(image.get().getS3_bucket_path()));
                     object = imagedetails;
+                    logger.info("Details fetched for ImageId " + imageId );
                 } else {
                     object = new ResponseEntity<>(HttpStatus.FORBIDDEN);
                 }
@@ -205,6 +211,7 @@ public class S3BucketStorageService {
                 object = (List<Object>) new ResponseEntity(object1, HttpStatus.FORBIDDEN);
             } else {
                 List<Object> objectList = imageRepository.findAllByProductId(productId);
+                logger.info("All details fetched for product id " + productId);
                 object = objectList;
             }
             return object;
