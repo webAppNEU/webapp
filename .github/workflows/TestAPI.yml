@@ -34,4 +34,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn package clean -DskipTests 
+      run: mvn test -DTest=UnitTest#healthz -spring.datasource.password=env.DB_PASSWORD
