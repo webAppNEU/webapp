@@ -34,4 +34,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn package clean -DskipTests 
+      run: mvn -f /home/runner/work/webapp/webapp/pom.xml surefire:test
