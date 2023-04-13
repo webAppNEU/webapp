@@ -14,8 +14,6 @@ jobs:
     env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_PROFILE: ${{ secrets.AWS_PROFILE}}
-        AWS_REGION: us-east-1
         
     steps:
           
@@ -34,7 +32,14 @@ jobs:
       - name: Packer Build - Branches
         #if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
-
+        
+      - name: Set AWS Demo Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEMO }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }}
+          aws-region: us_east_1
+          
       - name: Copying ami Artifacts and Launching Template
         run: |
           AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2)
