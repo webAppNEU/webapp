@@ -49,12 +49,12 @@ source "amazon-ebs" "my-ami" {
   #ssh_keypair_name       = "ec2test"
   #ssh_private_key_file   = "~/.ssh/ec2test"
 
-  launch_block_device_mappings {
-    delete_on_termination = true
-    device_name           = "/dev/xvda"
-    volume_size           = 8
-    volume_type           = "gp2"
-  }
+  // launch_block_device_mappings {
+  //   delete_on_termination = true
+  //   device_name           = "/dev/xvda"
+  //   volume_size           = 8
+  //   volume_type           = "gp2"
+  // }
 
   ssh_username = "${var.ssh_username}"
 
@@ -84,7 +84,7 @@ provisioner "shell" {
   //   destination = "/home/ec2-user/webapp"
   // }
     provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/target/UserWebApp-0.0.1-SNAPSHOT.jar"
+    source      = "./target/UserWebApp-0.0.1-SNAPSHOT.jar"
     destination = "/home/ec2-user/webapp/UserWebApp-0.0.1-SNAPSHOT.jar"
   }
 
@@ -105,6 +105,13 @@ provisioner "shell" {
     script       = "./buildandrun.sh"
     pause_before = "5s"
   }
+  
+ post-processor "manifest" {
 
+ output = "manifest.json"
+
+ strip_path = true
+
+ }
 
 }

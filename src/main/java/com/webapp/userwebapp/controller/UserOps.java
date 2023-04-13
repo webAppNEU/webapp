@@ -39,7 +39,8 @@ public class UserOps {
     @GetMapping("/healthz")
     public Object healthz()
     {
-        statsDClient.incrementCounter("healthz.service");
+
+        //statsDClient.incrementCounter("healthz.service");
         return HttpStatus.OK;
     }
     @PostMapping("/v1/user")
