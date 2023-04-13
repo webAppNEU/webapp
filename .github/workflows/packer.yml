@@ -14,6 +14,8 @@ jobs:
     env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-profile: ${{ secrets.AWS_PROFILE}}
+        aws-region: us-east-1
         
     steps:
           
@@ -32,3 +34,21 @@ jobs:
       - name: Packer Build - Branches
         #if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
+
+
+      - name: Copying ami Artifacts and Launching Template
+      - name: Copying ami Artifacts and Launching Template
+        run: |
+          AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2)
+          echo $AMI_ID
+          LT_ID=$(aws ec2 describe-launch-templates --launch-template-name launchtemplate | jq '.LaunchTemplates[].LaunchTemplateId')
+          LT_ID="${LT_ID%\"}"
+          LT_ID="${LT_ID#\"}"
+          echo $LT_ID
+          aws ec2 create-launch-template-version --launch-template-id $LT_ID --version-description WebVersion2 --source-version 1 --launch-template-data "ImageId=$AMI_ID"
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name asg_launch_config --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
+
+      - name: Refreshing Instances
+        run: aws autoscaling start-instance-refresh --auto-scaling-group-name asg_launch_config
+
+
