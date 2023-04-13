@@ -35,8 +35,6 @@ jobs:
         #if: github.event.pull_request.merged == true
         run: "packer build ./ami1.pkr.hcl"
 
-
-      - name: Copying ami Artifacts and Launching Template
       - name: Copying ami Artifacts and Launching Template
         run: |
           AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2)
