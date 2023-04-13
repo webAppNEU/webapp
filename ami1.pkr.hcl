@@ -105,10 +105,10 @@ provisioner "shell" {
     script       = "./buildandrun.sh"
     pause_before = "5s"
   }
-  
+
  post-processor "manifest" {
 
- output = "manifest.json"
+ output = "./manifest.json"
 
  strip_path = true
 
