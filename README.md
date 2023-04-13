@@ -44,4 +44,4 @@ Store the Image details in the RDS and meta data in S3 for future use.
 The endpoints available for operations include GET, POST, PUT, PATCH, and DELETE requests for users and products. The HTTP messages that can be received include "200 OK," "201 Created," "204 No Content," "400 Bad Request," "401 Unauthenticated", "404 Not Found" and "403 Forbidden".
 
 Java Application also log messages when each API is called along with collecting the count for each API call.
-Packer was updated to create amazon cloud watch service and config file for it which would pass the Statsd data to cloud watch displaying the call of counts for each API.
+Packer was updated to create amazon cloud watch service and config file for it which would pass the Statsd data to cloud watch displaying the call of counts for each API..
