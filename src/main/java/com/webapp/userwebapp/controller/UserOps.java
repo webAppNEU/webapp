@@ -50,7 +50,7 @@ public class UserOps {
         //statsDClient.incrementCounter("healthz.service");
         return HttpStatus.OK;
     }
-    @PostMapping("/v1/user")
+    @PostMapping("/v2/user")
     public Object createUser(@RequestBody User user)
     {
        try {
